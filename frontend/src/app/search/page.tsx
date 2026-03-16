@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Layout from '../../components/Layout';
+import { getApiUrl } from '../../utils/api';
 
 export default function SearchDoctors() {
   const [specialties, setSpecialties] = useState<any[]>([]);
@@ -15,7 +16,7 @@ export default function SearchDoctors() {
     date: '',
   });
 
-  const API_URL = typeof window !== 'undefined' ? `http://${window.location.hostname}:5000` : 'http://localhost:5000';
+  const API_URL = getApiUrl();
 
   useEffect(() => {
     fetchSpecialties();
