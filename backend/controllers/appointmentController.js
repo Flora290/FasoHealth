@@ -24,6 +24,7 @@ const createAppointment = async (req, res) => {
         // Map legacy consultation types if present
         if (consultationType === 'consultation') consultationType = 'in-person';
         if (consultationType === 'teleconsultation') consultationType = 'video';
+        // 'phone' is now a valid consultationType, no mapping needed.
 
         // Verify doctor exists
         const doctorUser = await User.findById(doctor);
@@ -90,7 +91,8 @@ const createAppointment = async (req, res) => {
             urgency,
             consultationType,
             notes,
-            payment: req.body.payment || { method: 'cash', status: 'pending' }
+            payment: req.body.payment || { method: 'cash', status: 'pending' },
+            timeSlot: startTime || undefined
         });
 
         // Populate appointment details

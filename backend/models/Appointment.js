@@ -42,7 +42,7 @@ const appointmentSchema = new mongoose.Schema({
     },
     consultationType: {
         type: String,
-        enum: ['in-person', 'video'],
+        enum: ['in-person', 'video', 'phone'],
         default: 'in-person'
     },
     reason: { 
