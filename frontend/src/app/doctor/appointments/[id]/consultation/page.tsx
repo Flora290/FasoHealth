@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Layout from '../../../../../components/Layout';
+import { getApiUrl } from '@/utils/api';
 
 export default function ConsultationRoom() {
   const { id } = useParams();
@@ -23,7 +24,6 @@ export default function ConsultationRoom() {
   const [currentMed, setCurrentMed] = useState({ name: '', dosage: '', frequency: '', duration: '', instructions: '' });
   const [generalInstructions, setGeneralInstructions] = useState('');
 
-  const API_URL = typeof window !== 'undefined' ? `http://${window.location.hostname}:5000` : 'http://localhost:5000';
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function ConsultationRoom() {
 
   const fetchAppointmentDetails = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/appointments/${id}`, {
+      const res = await fetch(`${getApiUrl()}/api/appointments/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -70,7 +70,7 @@ export default function ConsultationRoom() {
       setError('');
 
       // 1. Update Appointment (Notes, Diagnosis, Symptoms, and complete status)
-      const aptRes = await fetch(`${API_URL}/api/appointments/${id}`, {
+      const aptRes = await fetch(`${getApiUrl()}/api/appointments/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({
@@ -85,7 +85,7 @@ export default function ConsultationRoom() {
         throw new Error(errData.message || 'Error saving medical record.');
       }
 
-      const statusRes = await fetch(`${API_URL}/api/appointments/${id}/status`, {
+      const statusRes = await fetch(`${getApiUrl()}/api/appointments/${id}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ status: 'completed' })
@@ -98,7 +98,7 @@ export default function ConsultationRoom() {
 
       // 2. Create Prescription if medications exist
       if (medications.length > 0) {
-        const rxRes = await fetch(`${API_URL}/api/prescriptions`, {
+        const rxRes = await fetch(`${getApiUrl()}/api/prescriptions`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
           body: JSON.stringify({

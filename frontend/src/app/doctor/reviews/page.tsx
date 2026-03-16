@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { apiCall } from '../../../utils/api';
 
 interface Review {
   _id: string;
@@ -51,23 +52,17 @@ export default function DoctorReviews() {
 
   const fetchReviews = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      };
+      const headers = { 'Authorization': `Bearer ${localStorage.getItem('token')}` };
 
       // Get user info first
-      const userRes = await fetch(`http://${window.location.hostname}:5000/api/auth/profile`, { headers });
-      const userData = await userRes.json();
+      const userData = await apiCall('/api/auth/profile', { headers });
 
       // Fetch reviews with stats
       const queryParams = new URLSearchParams();
       if (filter.rating) queryParams.append('rating', filter.rating);
       if (filter.verified) queryParams.append('verified', filter.verified);
 
-      const res = await fetch(`http://${window.location.hostname}:5000/api/reviews/doctor/${userData._id}?${queryParams.toString()}&showUnverified=true`, { headers });
-      const data = await res.json();
+      const data = await apiCall(`/api/reviews/doctor/${userData._id}?${queryParams.toString()}&showUnverified=true`, { headers });
       
       setReviews(data.reviews || []);
       setStats(data.stats);
@@ -82,23 +77,15 @@ export default function DoctorReviews() {
     if (!responseText.trim()) return;
 
     try {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      };
-
-      const res = await fetch(`http://${window.location.hostname}:5000/api/reviews/${reviewId}/respond`, {
+      await apiCall(`/api/reviews/${reviewId}/respond`, {
         method: 'POST',
-        headers,
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
         body: JSON.stringify({ text: responseText })
       });
 
-      if (res.ok) {
-        setResponseText('');
-        setSelectedReview(null);
-        fetchReviews();
-      }
+      setResponseText('');
+      setSelectedReview(null);
+      fetchReviews();
     } catch (error) {
       console.error('Error responding to review:', error);
     }
@@ -106,20 +93,12 @@ export default function DoctorReviews() {
 
   const handleMarkHelpful = async (reviewId: string) => {
     try {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      };
-
-      const res = await fetch(`http://${window.location.hostname}:5000/api/reviews/${reviewId}/helpful`, {
+      await apiCall(`/api/reviews/${reviewId}/helpful`, {
         method: 'POST',
-        headers
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
 
-      if (res.ok) {
-        fetchReviews();
-      }
+      fetchReviews();
     } catch (error) {
       console.error('Error marking review as helpful:', error);
     }

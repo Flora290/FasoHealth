@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Layout from '../../components/Layout';
+import { getApiUrl } from '@/utils/api';
 
 export default function ChatPage() {
   const [conversations, setConversations] = useState<any[]>([]);
@@ -14,7 +15,6 @@ export default function ChatPage() {
   const [user, setUser] = useState<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const API_URL = typeof window !== 'undefined' ? `http://${window.location.hostname}:5000` : 'http://localhost:5000';
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
   const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
 
@@ -29,7 +29,7 @@ export default function ChatPage() {
 
   const fetchUser = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/auth/profile`, { headers });
+      const res = await fetch(`${getApiUrl()}/api/auth/profile`, { headers });
       setUser(await res.json());
     } catch (e) {}
   };
@@ -37,7 +37,7 @@ export default function ChatPage() {
   const fetchConversations = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/api/appointments/my?status=confirmed&limit=20`, { headers });
+      const res = await fetch(`${getApiUrl()}/api/appointments/my?status=confirmed&limit=20`, { headers });
       const data = await res.json();
       // Use confirmed appointments as "conversations" with doctors
       const convs = (data.appointments || []).map((apt: any) => ({
@@ -56,7 +56,7 @@ export default function ChatPage() {
     setSelectedConversation(conv);
     setMessages([]);
     try {
-      const res = await fetch(`${API_URL}/api/messages?recipientId=${conv.doctor?._id}&limit=50`, { headers });
+      const res = await fetch(`${getApiUrl()}/api/messages?recipientId=${conv.doctor?._id}&limit=50`, { headers });
       if (res.ok) {
         const data = await res.json();
         setMessages(data.messages || []);
@@ -81,7 +81,7 @@ export default function ChatPage() {
     setMessages(prev => [...prev, tempMsg]);
     setNewMessage('');
     try {
-      const res = await fetch(`${API_URL}/api/messages`, {
+      const res = await fetch(`${getApiUrl()}/api/messages`, {
         method: 'POST',
         headers,
         body: JSON.stringify({

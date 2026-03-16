@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { apiCall } from '../../../utils/api';
 
 interface Appointment {
   _id: string;
@@ -47,19 +48,14 @@ export default function DoctorAppointments() {
 
   const fetchAppointments = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      };
-
       const queryParams = new URLSearchParams();
       if (filter.status) queryParams.append('status', filter.status);
       if (filter.startDate) queryParams.append('startDate', filter.startDate);
       if (filter.endDate) queryParams.append('endDate', filter.endDate);
 
-      const res = await fetch(`http://${window.location.hostname}:5000/api/appointments/doctor?${queryParams.toString()}`, { headers });
-      const data = await res.json();
+      const data = await apiCall(`/api/appointments/doctor?${queryParams.toString()}`, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
       setAppointments(data.appointments || []);
       setLoading(false);
     } catch (error) {
@@ -70,27 +66,19 @@ export default function DoctorAppointments() {
 
   const handleStatusUpdate = async (appointmentId: string, status: string, cancellationReason?: string) => {
     try {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      };
-
       const body: any = { status };
       if (cancellationReason) {
         body.cancellationReason = cancellationReason;
       }
 
-      const res = await fetch(`http://${window.location.hostname}:5000/api/appointments/${appointmentId}/status`, {
+      await apiCall(`/api/appointments/${appointmentId}/status`, {
         method: 'PUT',
-        headers,
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
         body: JSON.stringify(body)
       });
 
-      if (res.ok) {
-        fetchAppointments();
-        setSelectedAppointment(null);
-      }
+      fetchAppointments();
+      setSelectedAppointment(null);
     } catch (error) {
       console.error('Error updating appointment:', error);
     }

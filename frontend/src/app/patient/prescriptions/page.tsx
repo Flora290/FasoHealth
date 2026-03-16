@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Layout from '../../../components/Layout';
-import { apiCall } from '../../../utils/api';
+import { apiCall, getApiUrl } from '../../../utils/api';
 
 interface Prescription {
   _id: string;
@@ -81,8 +81,7 @@ export default function DigitalPrescriptions() {
         'Content-Type': 'application/json'
       };
 
-      const API_URL = typeof window !== 'undefined' ? `http://${window.location.hostname}:5000` : 'http://localhost:5000';
-      const res = await fetch(`${API_URL}/api/prescriptions/my`, { headers });
+      const res = await fetch(`${getApiUrl()}/api/prescriptions/my`, { headers });
       
       if (!res.ok) throw new Error('Network error');
       

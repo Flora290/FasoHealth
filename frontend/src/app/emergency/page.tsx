@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getApiUrl } from '@/utils/api';
 
 export default function EmergencyPage() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://${window.location.hostname}:5000/api/emergency`)
+    fetch(`${getApiUrl()}/api/emergency`)
       .then(res => res.json())
       .then(d => {
         setData(d);

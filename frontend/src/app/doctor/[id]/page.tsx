@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Layout from '../../../components/Layout';
+import { apiCall } from '../../../utils/api';
 
 export default function DoctorProfile() {
   const { id } = useParams();
@@ -12,7 +13,6 @@ export default function DoctorProfile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const API_URL = typeof window !== 'undefined' ? `http://${window.location.hostname}:5000` : 'http://localhost:5000';
 
   useEffect(() => {
     fetchDoctorDetails();
@@ -20,9 +20,7 @@ export default function DoctorProfile() {
 
   const fetchDoctorDetails = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/search/doctors/${id}`);
-      if (!res.ok) throw new Error('Doctor not found');
-      const data = await res.json();
+      const data = await apiCall(`/api/search/doctors/${id}`);
       setDoctor(data.doctor || data);
     } catch (err: any) {
       setError(err.message);

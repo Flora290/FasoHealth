@@ -1,26 +1,16 @@
 // Configuration pour l'API
-export const API_CONFIG = {
-  // Pour le développement local
-  development: {
-    // Essaye d'abord l'IP locale, sinon fallback sur localhost
-    baseURL: process.env.NODE_ENV === 'development' 
-      ? `http://${window.location.hostname}:5000`
-      : 'http://localhost:5000',
-    timeout: 10000
-  },
-  
-  // Pour la production
-  production: {
-    baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://fasohealth-backend.onrender.com/api',
-    timeout: 10000
-  }
-};
-
-// Types pour la configuration
-type Environment = 'development' | 'production';
-
 // Exporter la configuration actuelle
-export const config = API_CONFIG[process.env.NODE_ENV as Environment] || API_CONFIG.development;
+const isLocal = typeof window !== 'undefined' && 
+                (window.location.hostname === 'localhost' || 
+                 window.location.hostname === '127.0.0.1' || 
+                 window.location.hostname.startsWith('10.0.2.'));
+
+export const config = {
+  baseURL: isLocal 
+    ? (typeof window !== 'undefined' ? `http://${window.location.hostname}:5000` : 'http://localhost:5000')
+    : (process.env.NEXT_PUBLIC_API_URL || 'https://fasohealth-backend.onrender.com/api'),
+  timeout: 10000
+};
 
 // Helper pour les appels API
 export const apiRequest = async (endpoint: string, options: RequestInit = {}) => {

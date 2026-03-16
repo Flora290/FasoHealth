@@ -1,16 +1,15 @@
 // Helper pour obtenir l'URL de l'API basée sur l'hôte actuel
 export const getApiUrl = () => {
-  // En production, utilise l'URL Render
-  if (process.env.NODE_ENV === 'production' || (typeof window !== 'undefined' && window.location.hostname !== 'localhost')) {
-    return 'https://fasohealth-backend.onrender.com';
-  }
-  
-  // En développement local
-  if (typeof window !== 'undefined') {
+  // En développement local (localhost ou IP locale d'émulateur)
+  if (typeof window !== 'undefined' && 
+      (window.location.hostname === 'localhost' || 
+       window.location.hostname === '127.0.0.1' || 
+       window.location.hostname.startsWith('10.0.2.'))) {
     return `http://${window.location.hostname}:5000`;
   }
   
-  return 'http://localhost:5000';
+  // Par défaut, utilise l'URL de production Render
+  return 'https://fasohealth-backend.onrender.com';
 };
 
 // Helper pour les appels API avec gestion d'erreur

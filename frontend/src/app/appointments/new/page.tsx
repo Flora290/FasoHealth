@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Layout from '../../../components/Layout';
+import { apiCall } from '../../../utils/api';
 
 function AppointmentBookingForm() {
   const searchParams = useSearchParams();
@@ -39,7 +40,6 @@ function AppointmentBookingForm() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [createdAppointmentId, setCreatedAppointmentId] = useState('');
 
-  const API_URL = typeof window !== 'undefined' ? `http://${window.location.hostname}:5000` : 'http://localhost:5000';
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
 
   useEffect(() => {
@@ -53,8 +53,7 @@ function AppointmentBookingForm() {
   const fetchDoctor = async () => {
     setLoadingDoctor(true);
     try {
-      const res = await fetch(`${API_URL}/api/search/doctors/${doctorId}`);
-      const data = await res.json();
+      const data = await apiCall(`/api/search/doctors/${doctorId}`);
       setDoctor(data.doctor);
     } catch (e) {
       console.error(e);
@@ -68,8 +67,7 @@ function AppointmentBookingForm() {
     setSlots([]);
     setSelectedSlot(null);
     try {
-      const res = await fetch(`${API_URL}/api/search/slots/${doctorId}?date=${form.date}`);
-      const data = await res.json();
+      const data = await apiCall(`/api/search/slots/${doctorId}?date=${form.date}`);
       setSlots(Array.isArray(data) ? data : []);
     } catch (e) {
       console.error(e);
@@ -86,9 +84,9 @@ function AppointmentBookingForm() {
     setSubmitting(true); setError('');
     try {
       // 1. Create the appointment first (with 'pending' status)
-      const res = await fetch(`${API_URL}/api/appointments`, {
+      const data = await apiCall('/api/appointments', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           doctor: doctorId,
           availability: selectedSlot.availabilityId,
@@ -107,25 +105,19 @@ function AppointmentBookingForm() {
         })
       });
 
-      const data = await res.json();
-      if (res.ok) {
-        // 2. If online payment is needed, stop and show payment step
-        if (form.paymentMethod !== 'cash') {
-          setCreatedAppointmentId(data._id);
-          setPaymentStep(true);
-          setSubmitting(false);
-          return;
-        }
-
-        // 3. Otherwise (cash), finish
-        setSuccess(true);
-        setTimeout(() => router.push('/dashboard/patient'), 2500);
-      } else {
-        setError(data.message || 'Error occurred while booking appointment.');
+      // 2. If online payment is needed, stop and show payment step
+      if (form.paymentMethod !== 'cash') {
+        setCreatedAppointmentId(data._id);
+        setPaymentStep(true);
         setSubmitting(false);
+        return;
       }
-    } catch (e) {
-      setError('Unable to contact the server.');
+
+      // 3. Otherwise (cash), finish
+      setSuccess(true);
+      setTimeout(() => router.push('/dashboard/patient'), 2500);
+    } catch (err: any) {
+      setError(err.message || 'Error occurred while booking appointment.');
       setSubmitting(false);
     }
   };
@@ -136,9 +128,9 @@ function AppointmentBookingForm() {
     setError('');
     
     try {
-      const res = await fetch(`${API_URL}/api/payments/initiate`, {
+      await apiCall('/api/payments/initiate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           appointmentId: createdAppointmentId,
           provider: form.paymentMethod,
@@ -147,22 +139,16 @@ function AppointmentBookingForm() {
         })
       });
 
-      if (res.ok) {
-        // Mocking the successful payment after simulation
-        setTimeout(() => {
-          setPaymentSuccess(true);
-          setPaymentProcessing(false);
-          setPaymentStep(false);
-          setSuccess(true);
-          setTimeout(() => router.push('/dashboard/patient'), 2500);
-        }, 3000);
-      } else {
-        const data = await res.json();
-        setError(data.message || 'Payment initiation failed.');
+      // Mocking the successful payment after simulation
+      setTimeout(() => {
+        setPaymentSuccess(true);
         setPaymentProcessing(false);
-      }
-    } catch (e) {
-      setError('Network error during payment.');
+        setPaymentStep(false);
+        setSuccess(true);
+        setTimeout(() => router.push('/dashboard/patient'), 2500);
+      }, 3000);
+    } catch (err: any) {
+      setError(err.message || 'Payment initiation failed.');
       setPaymentProcessing(false);
     }
   };

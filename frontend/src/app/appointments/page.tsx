@@ -3,13 +3,13 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Layout from '../../components/Layout';
+import { getApiUrl } from '@/utils/api';
 
 export default function PatientAppointments() {
   const [appointments, setAppointments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
 
-  const API_URL = typeof window !== 'undefined' ? `http://${window.location.hostname}:5000` : 'http://localhost:5000';
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
   const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
 
@@ -20,7 +20,7 @@ export default function PatientAppointments() {
     try {
       const params = new URLSearchParams({ limit: '50' });
       if (filter !== 'all') params.set('status', filter);
-      const res = await fetch(`${API_URL}/api/appointments/my?${params.toString()}`, { headers });
+      const res = await fetch(`${getApiUrl()}/api/appointments/my?${params.toString()}`, { headers });
       const data = await res.json();
       setAppointments(data.appointments || []);
     } catch (e) { console.error(e); }

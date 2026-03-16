@@ -154,11 +154,11 @@ export default function DoctorDashboard() {
             Manage your appointments and availability. Track your statistics and stay connected with your patients.
           </p>
           <div className="flex flex-wrap gap-4">
-            <Link href="/doctor/availability" className="flex items-center justify-center px-6 py-3 bg-gradient-r from-teal-500 to-teal-700 text-white rounded-2xl hover:shadow-lg transition-all duration-300 font-semibold">
+            <Link href="/doctor/availability" style={{ backgroundColor: '#0d9488' }} className="flex items-center justify-center px-6 py-3 text-white border-2 border-teal-700 rounded-2xl shadow-xl hover:bg-teal-700 hover:shadow-2xl transition-all duration-300 font-bold">
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-              Manage Availability
+              SETUP MY AVAILABILITY
             </Link>
             <Link href="/doctor/appointments" className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-2xl hover:shadow-lg transition-all duration-300 font-semibold">
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

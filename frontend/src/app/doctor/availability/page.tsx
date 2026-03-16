@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { apiCall } from '../../../utils/api';
 
 export default function DoctorAvailability() {
   const [user, setUser] = useState<any>(null);
@@ -26,27 +27,21 @@ export default function DoctorAvailability() {
   });
 
   const fetchAvailabilities = async () => {
-    if (!user) return; // Don't fetch if user is not available yet
+    if (!user) return;
     
     try {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      };
-
       const startDate = new Date().toISOString().split('T')[0];
       const endDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
-      const res = await fetch(`http://${window.location.hostname}:5000/api/availability/doctor/${user._id}?startDate=${startDate}&endDate=${endDate}`, { headers });
-      const data = await res.json();
+      const data = await apiCall(`/api/availability/doctor/${user._id}?startDate=${startDate}&endDate=${endDate}`, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
       
-      // Ensure data is always an array
       setAvailabilities(Array.isArray(data) ? data : []);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching availabilities:', error);
-      setAvailabilities([]); // Set to empty array on error
+      setAvailabilities([]);
       setLoading(false);
     }
   };
@@ -63,15 +58,10 @@ export default function DoctorAvailability() {
 
   const fetchUserData = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      };
-
-      const userRes = await fetch(`http://${window.location.hostname}:5000/api/auth/profile`, { headers });
-      const userData = await userRes.json();
-      setUser(userData);
+      const data = await apiCall('/api/auth/profile', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
+      setUser(data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -81,38 +71,30 @@ export default function DoctorAvailability() {
     e.preventDefault();
     
     try {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      };
-
-      const res = await fetch(`http://${window.location.hostname}:5000/api/availability`, {
+      await apiCall('/api/availability', {
         method: 'POST',
-        headers,
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
         body: JSON.stringify(formData)
       });
 
-      if (res.ok) {
-        setShowForm(false);
-        setFormData({
-          date: '',
-          startTime: '',
-          endTime: '',
-          slotDuration: 30,
-          maxAppointments: 1,
-          isRecurring: false,
-          recurringPattern: 'weekly',
-          recurringEndDate: '',
-          consultationType: 'in-person',
-          location: {
-            address: '',
-            city: '',
-            postalCode: ''
-          }
-        });
-        fetchAvailabilities();
-      }
+      setShowForm(false);
+      setFormData({
+        date: '',
+        startTime: '',
+        endTime: '',
+        slotDuration: 30,
+        maxAppointments: 1,
+        isRecurring: false,
+        recurringPattern: 'weekly',
+        recurringEndDate: '',
+        consultationType: 'in-person',
+        location: {
+          address: '',
+          city: '',
+          postalCode: ''
+        }
+      });
+      fetchAvailabilities();
     } catch (error) {
       console.error('Error creating availability:', error);
     }
@@ -122,20 +104,12 @@ export default function DoctorAvailability() {
     if (!confirm('Are you sure you want to delete this availability?')) return;
     
     try {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      };
-
-      const res = await fetch(`http://${window.location.hostname}:5000/api/availability/${id}`, {
+      await apiCall(`/api/availability/${id}`, {
         method: 'DELETE',
-        headers
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
 
-      if (res.ok) {
-        fetchAvailabilities();
-      }
+      fetchAvailabilities();
     } catch (error) {
       console.error('Error deleting availability:', error);
     }

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { getApiUrl } from '@/utils/api';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -21,7 +22,7 @@ export default function ForgotPassword() {
     setSuccess('');
 
     try {
-      const backendUrl = `http://${window.location.hostname}:5000/api/auth/forgot-password`;
+      const backendUrl = `${getApiUrl()}/api/auth/forgot-password`;
       const res = await fetch(backendUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -53,7 +54,7 @@ export default function ForgotPassword() {
     setError('');
 
     try {
-      const backendUrl = `http://${window.location.hostname}:5000/api/auth/reset-password`;
+      const backendUrl = `${getApiUrl()}/api/auth/reset-password`;
       const res = await fetch(backendUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

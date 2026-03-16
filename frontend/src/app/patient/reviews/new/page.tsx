@@ -4,6 +4,7 @@ import { useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Layout from '../../../../components/Layout';
+import { getApiUrl } from '@/utils/api';
 
 function ReviewForm() {
   const searchParams = useSearchParams();
@@ -26,7 +27,6 @@ function ReviewForm() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
-  const API_URL = typeof window !== 'undefined' ? `http://${window.location.hostname}:5000` : 'http://localhost:5000';
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
 
   const aspectLabels: Record<string, string> = {
@@ -42,7 +42,7 @@ function ReviewForm() {
     if (rating === 0) { setError('Please provide a global rating.'); return; }
     setSubmitting(true); setError('');
     try {
-      const res = await fetch(`${API_URL}/api/reviews`, {
+      const res = await fetch(`${getApiUrl()}/api/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ doctor: doctorId, appointment: appointmentId, rating, comment, aspects, wouldRecommend })
