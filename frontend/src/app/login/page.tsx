@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { getApiUrl } from '../../utils/api';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -19,7 +20,7 @@ export default function Login() {
     setError('');
 
     try {
-        const backendUrl = `http://${window.location.hostname}:5000/api/auth/login`;
+        const backendUrl = `${getApiUrl()}/api/auth/login`;
         const res = await fetch(backendUrl, {
             method: 'POST',
             headers: {
@@ -59,7 +60,7 @@ export default function Login() {
     setError('');
 
     try {
-        const backendUrl = `http://${window.location.hostname}:5000/api/auth/verify-otp`;
+        const backendUrl = `${getApiUrl()}/api/auth/verify-otp`;
         const res = await fetch(backendUrl, {
             method: 'POST',
             headers: {
@@ -136,7 +137,7 @@ export default function Login() {
                 <div className="flex flex-col gap-1.5">
                     <div className="flex justify-between items-center">
                         <label className="text-sm font-semibold text-teal-900" htmlFor="password">Password</label>
-                        <Link href="/forgot-password" size="sm" className="text-xs text-teal-600 hover:text-teal-800 font-medium cursor-pointer">
+                        <Link href="/forgot-password" className="text-xs text-teal-600 hover:text-teal-800 font-medium cursor-pointer">
                             Forgot password?
                         </Link>
                     </div>

@@ -1,11 +1,15 @@
 // Helper pour obtenir l'URL de l'API basée sur l'hôte actuel
 export const getApiUrl = () => {
-  // En développement, utilise l'hôte actuel (localhost ou IP locale)
+  // En production, utilise l'URL Render
+  if (process.env.NODE_ENV === 'production' || (typeof window !== 'undefined' && window.location.hostname !== 'localhost')) {
+    return 'https://fasohealth-backend.onrender.com';
+  }
+  
+  // En développement local
   if (typeof window !== 'undefined') {
     return `http://${window.location.hostname}:5000`;
   }
   
-  // Fallback pour le serveur ou environnement de test
   return 'http://localhost:5000';
 };
 
