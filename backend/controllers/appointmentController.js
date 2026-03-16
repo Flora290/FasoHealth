@@ -133,8 +133,12 @@ const createAppointment = async (req, res) => {
 
         res.status(201).json(populatedAppointment);
     } catch (error) {
-        console.error('Error in createAppointment:', error);
-        res.status(500).json({ message: error.message });
+        console.error('CRITICAL ERROR in createAppointment:', error);
+        res.status(500).json({ 
+            message: 'Internal Server Error during appointment creation', 
+            error: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        });
     }
 };
 

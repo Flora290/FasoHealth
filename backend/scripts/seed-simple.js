@@ -1,4 +1,5 @@
 // Script de seed simple et fonctionnel
+require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
