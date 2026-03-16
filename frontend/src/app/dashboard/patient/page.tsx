@@ -249,11 +249,11 @@ export default function PatientDashboard() {
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-xl font-semibold text-gray-900">Upcoming Appointments</h3>
             <Link href="/appointments" className="text-teal-600 hover:text-teal-800 font-medium text-sm">
-              Voir tout →
+              See all →
             </Link>
           </div>
           {appointments.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">Aucun rendez-vous à venir</p>
+            <p className="text-gray-500 text-center py-8">No upcoming appointments</p>
           ) : (
             <div className="space-y-4">
               {appointments.slice(0, 3).map((appointment) => (
