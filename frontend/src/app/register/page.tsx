@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getApiUrl } from '../../utils/api';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ export default function Register() {
   useEffect(() => {
     const fetchSpecialties = async () => {
         try {
-            const res = await fetch(`http://${window.location.hostname}:5000/api/specialties`);
+            const res = await fetch(`${getApiUrl()}/api/specialties`);
             const data = await res.json();
             if (res.ok) {
                 setSpecialties(data.specialties || []);
@@ -45,7 +46,7 @@ export default function Register() {
     setError('');
     
     try {
-        const backendUrl = `http://${window.location.hostname}:5000/api/auth/register`;
+        const backendUrl = `${getApiUrl()}/api/auth/register`;
         const res = await fetch(backendUrl, {
             method: 'POST',
             headers: {
@@ -83,7 +84,7 @@ export default function Register() {
     setError('');
     
     try {
-        const backendUrl = `http://${window.location.hostname}:5000/api/auth/verify-otp`;
+        const backendUrl = `${getApiUrl()}/api/auth/verify-otp`;
         const res = await fetch(backendUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -152,7 +153,7 @@ export default function Register() {
                 Create an account to start managing your health journey.
             </p>
         </div>
-
+ 
         {error && <div className="w-full bg-red-100 text-red-700 p-3 rounded-lg mb-4 text-sm font-semibold">{error}</div>}
         {success && !showOtp && <div className="w-full bg-teal-100 text-teal-800 p-3 rounded-lg mb-4 text-sm font-semibold">Account created successfully! Redirecting...</div>}
         {success && showOtp && <div className="w-full bg-teal-100 text-teal-800 p-3 rounded-lg mb-4 text-sm font-semibold">Verification code sent to your email!</div>}
@@ -244,7 +245,7 @@ export default function Register() {
                             required
                         >
                             <option value="">Select a specialty</option>
-                            {specialties.map((s) => (
+                            {specialties.map((s: any) => (
                                 <option key={s._id} value={s._id}>{s.name}</option>
                             ))}
                         </select>
