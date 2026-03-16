@@ -28,37 +28,37 @@ const sendEmailNotification = async (userId, type, data) => {
 
         switch (type) {
             case 'appointment_pending':
-                subject = 'Nouvelle demande de rendez-vous - SmartCare';
+                subject = 'New Appointment Request - FasoHealth';
                 htmlContent = generateAppointmentPendingEmail(user, data);
                 break;
                 
             case 'appointment_confirmed':
-                subject = 'Rendez-vous confirmé - SmartCare';
+                subject = 'Appointment Confirmed - FasoHealth';
                 htmlContent = generateAppointmentConfirmedEmail(user, data);
                 break;
                 
             case 'appointment_cancelled':
-                subject = 'Rendez-vous annulé - SmartCare';
+                subject = 'Appointment Cancelled - FasoHealth';
                 htmlContent = generateAppointmentCancelledEmail(user, data);
                 break;
                 
             case 'appointment_reminder':
-                subject = 'Rappel de rendez-vous - SmartCare';
+                subject = 'Appointment Reminder - FasoHealth';
                 htmlContent = generateAppointmentReminderEmail(user, data);
                 break;
                 
             case 'appointment_completed':
-                subject = 'Rendez-vous terminé - FasoHealth';
+                subject = 'Appointment Completed - FasoHealth';
                 htmlContent = generateAppointmentCompletedEmail(user, data);
                 break;
                 
             case 'review_received':
-                subject = 'Nouvel avis reçu - FasoHealth';
+                subject = 'New Review Received - FasoHealth';
                 htmlContent = generateReviewReceivedEmail(user, data);
                 break;
                 
             case 'password_reset':
-                subject = 'Réinitialisation de votre mot de passe - FasoHealth';
+                subject = 'Password Reset - FasoHealth';
                 htmlContent = generatePasswordResetEmail(user, data);
                 break;
                 
@@ -103,7 +103,7 @@ const generateAppointmentPendingEmail = (user, data) => {
         <html>
         <head>
             <meta charset="utf-8">
-            <title>Nouvelle demande de rendez-vous</title>
+            <title>New Appointment Request</title>
             <style>
                 body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
                 .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -116,24 +116,24 @@ const generateAppointmentPendingEmail = (user, data) => {
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>🏥 SmartCare</h1>
-                    <h2>Nouvelle demande de rendez-vous</h2>
+                    <h1>🏥 FasoHealth</h1>
+                    <h2>New Appointment Request</h2>
                 </div>
                 <div class="content">
-                    <p>Bonjour ${user.name},</p>
-                    <p>Vous avez une nouvelle demande de rendez-vous:</p>
+                    <p>Hello ${user.name},</p>
+                    <p>You have a new appointment request:</p>
                     <ul>
                         <li><strong>Patient:</strong> ${data.patientName}</li>
                         <li><strong>Date:</strong> ${data.date}</li>
-                        <li><strong>Heure:</strong> ${data.time}</li>
-                        <li><strong>Motif:</strong> ${data.reason}</li>
+                        <li><strong>Time:</strong> ${data.time}</li>
+                        <li><strong>Reason:</strong> ${data.reason}</li>
                     </ul>
-                    <p>Veuillez vous connecter à votre tableau de bord pour confirmer ou refuser cette demande.</p>
-                    <a href="${process.env.FRONTEND_URL}/doctor/appointments" class="button">Voir les rendez-vous</a>
+                    <p>Please log in to your dashboard to confirm or decline this request.</p>
+                    <a href="${process.env.FRONTEND_URL}/doctor/appointments" class="button">View Appointments</a>
                 </div>
                 <div class="footer">
-                    <p>Cet email a été envoyé automatiquement par SmartCare.</p>
-                    <p>© ${new Date().getFullYear()} SmartCare. Tous droits réservés.</p>
+                    <p>This email was sent automatically by FasoHealth.</p>
+                    <p>&copy; ${new Date().getFullYear()} FasoHealth. All rights reserved.</p>
                 </div>
             </div>
         </body>
@@ -147,7 +147,7 @@ const generateAppointmentConfirmedEmail = (user, data) => {
         <html>
         <head>
             <meta charset="utf-8">
-            <title>Rendez-vous confirmé</title>
+            <title>Appointment Confirmed</title>
             <style>
                 body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
                 .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -161,28 +161,28 @@ const generateAppointmentConfirmedEmail = (user, data) => {
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>🏥 SmartCare</h1>
-                    <h2>Rendez-vous confirmé</h2>
+                    <h1>🏥 FasoHealth</h1>
+                    <h2>Appointment Confirmed</h2>
                 </div>
                 <div class="content">
                     <div class="success">
-                        ✅ Votre rendez-vous a été confirmé!
+                        ✅ Your appointment has been confirmed!
                     </div>
-                    <p>Bonjour ${user.name},</p>
-                    <p>Votre rendez-vous a été confirmé avec les détails suivants:</p>
+                    <p>Hello ${user.name},</p>
+                    <p>Your appointment has been confirmed with the following details:</p>
                     <ul>
-                        <li><strong>Médecin:</strong> Dr ${data.doctorName}</li>
-                        <li><strong>Spécialité:</strong> ${data.specialty}</li>
+                        <li><strong>Doctor:</strong> Dr. ${data.doctorName}</li>
+                        <li><strong>Specialty:</strong> ${data.specialty}</li>
                         <li><strong>Date:</strong> ${data.date}</li>
-                        <li><strong>Heure:</strong> ${data.time}</li>
+                        <li><strong>Time:</strong> ${data.time}</li>
                         <li><strong>Type:</strong> ${data.consultationType}</li>
                     </ul>
-                    <p>Merci de vous présenter 10 minutes avant l'heure du rendez-vous.</p>
-                    <a href="${process.env.FRONTEND_URL}/patient/appointments" class="button">Voir mes rendez-vous</a>
+                    <p>Please arrive 10 minutes before your appointment time.</p>
+                    <a href="${process.env.FRONTEND_URL}/patient/appointments" class="button">View My Appointments</a>
                 </div>
                 <div class="footer">
-                    <p>Cet email a été envoyé automatiquement par SmartCare.</p>
-                    <p>© ${new Date().getFullYear()} SmartCare. Tous droits réservés.</p>
+                    <p>This email was sent automatically by FasoHealth.</p>
+                    <p>&copy; ${new Date().getFullYear()} FasoHealth. All rights reserved.</p>
                 </div>
             </div>
         </body>
@@ -196,7 +196,7 @@ const generateAppointmentCancelledEmail = (user, data) => {
         <html>
         <head>
             <meta charset="utf-8">
-            <title>Rendez-vous annulé</title>
+            <title>Appointment Cancelled</title>
             <style>
                 body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
                 .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -210,27 +210,27 @@ const generateAppointmentCancelledEmail = (user, data) => {
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>🏥 SmartCare</h1>
-                    <h2>Rendez-vous annulé</h2>
+                    <h1>🏥 FasoHealth</h1>
+                    <h2>Appointment Cancelled</h2>
                 </div>
                 <div class="content">
                     <div class="warning">
-                        ⚠️ Votre rendez-vous a été annulé
+                        ⚠️ Your appointment has been cancelled
                     </div>
-                    <p>Bonjour ${user.name},</p>
-                    <p>Le rendez-vous suivant a été annulé:</p>
+                    <p>Hello ${user.name},</p>
+                    <p>The following appointment has been cancelled:</p>
                     <ul>
-                        <li><strong>Médecin:</strong> Dr ${data.doctorName}</li>
+                        <li><strong>Doctor:</strong> Dr. ${data.doctorName}</li>
                         <li><strong>Date:</strong> ${data.date}</li>
-                        <li><strong>Heure:</strong> ${data.time}</li>
-                        <li><strong>Raison:</strong> ${data.reason || 'Non spécifiée'}</li>
+                        <li><strong>Time:</strong> ${data.time}</li>
+                        <li><strong>Reason:</strong> ${data.reason || 'Not specified'}</li>
                     </ul>
-                    <p>Vous pouvez prendre un nouveau rendez-vous à tout moment.</p>
-                    <a href="${process.env.FRONTEND_URL}/search" class="button">Prendre un nouveau rendez-vous</a>
+                    <p>You can book a new appointment at any time.</p>
+                    <a href="${process.env.FRONTEND_URL}/search" class="button">Book a New Appointment</a>
                 </div>
                 <div class="footer">
-                    <p>Cet email a été envoyé automatiquement par SmartCare.</p>
-                    <p>© ${new Date().getFullYear()} SmartCare. Tous droits réservés.</p>
+                    <p>This email was sent automatically by FasoHealth.</p>
+                    <p>&copy; ${new Date().getFullYear()} FasoHealth. All rights reserved.</p>
                 </div>
             </div>
         </body>
@@ -244,7 +244,7 @@ const generateAppointmentReminderEmail = (user, data) => {
         <html>
         <head>
             <meta charset="utf-8">
-            <title>Rappel de rendez-vous</title>
+            <title>Appointment Reminder</title>
             <style>
                 body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
                 .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -258,27 +258,27 @@ const generateAppointmentReminderEmail = (user, data) => {
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>🏥 SmartCare</h1>
-                    <h2>⏰ Rappel de rendez-vous</h2>
+                    <h1>🏥 FasoHealth</h1>
+                    <h2>⏰ Appointment Reminder</h2>
                 </div>
                 <div class="content">
                     <div class="reminder">
-                        📅 Vous avez un rendez-vous demain!
+                        📅 You have an appointment tomorrow!
                     </div>
-                    <p>Bonjour ${user.name},</p>
-                    <p>Nous vous rappelons votre rendez-vous:</p>
+                    <p>Hello ${user.name},</p>
+                    <p>This is a reminder for your upcoming appointment:</p>
                     <ul>
-                        <li><strong>Médecin:</strong> Dr ${data.doctorName}</li>
+                        <li><strong>Doctor:</strong> Dr. ${data.doctorName}</li>
                         <li><strong>Date:</strong> ${data.date}</li>
-                        <li><strong>Heure:</strong> ${data.time}</li>
-                        <li><strong>Lieu:</strong> ${data.location || 'Non spécifié'}</li>
+                        <li><strong>Time:</strong> ${data.time}</li>
+                        <li><strong>Location:</strong> ${data.location || 'Not specified'}</li>
                     </ul>
-                    <p>Merci de vous présenter 10 minutes avant l'heure du rendez-vous.</p>
-                    <a href="${process.env.FRONTEND_URL}/appointments/${data.appointmentId}" class="button">Voir les détails</a>
+                    <p>Please arrive 10 minutes before your appointment time.</p>
+                    <a href="${process.env.FRONTEND_URL}/appointments/${data.appointmentId}" class="button">View Details</a>
                 </div>
                 <div class="footer">
-                    <p>Cet email a été envoyé automatiquement par SmartCare.</p>
-                    <p>© ${new Date().getFullYear()} SmartCare. Tous droits réservés.</p>
+                    <p>This email was sent automatically by FasoHealth.</p>
+                    <p>&copy; ${new Date().getFullYear()} FasoHealth. All rights reserved.</p>
                 </div>
             </div>
         </body>
@@ -292,7 +292,7 @@ const generateAppointmentCompletedEmail = (user, data) => {
         <html>
         <head>
             <meta charset="utf-8">
-            <title>Rendez-vous terminé</title>
+            <title>Appointment Completed</title>
             <style>
                 body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
                 .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -306,22 +306,22 @@ const generateAppointmentCompletedEmail = (user, data) => {
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>🏥 SmartCare</h1>
-                    <h2>Rendez-vous terminé</h2>
+                    <h1>🏥 FasoHealth</h1>
+                    <h2>Appointment Completed</h2>
                 </div>
                 <div class="content">
                     <div class="success">
-                        ✅ Votre rendez-vous est terminé
+                        ✅ Your appointment is complete
                     </div>
-                    <p>Bonjour ${user.name},</p>
-                    <p>Votre rendez-vous avec le Dr ${data.doctorName} s'est bien déroulé.</p>
-                    <p>Nous espérons que vous êtes satisfait(e) de la consultation.</p>
-                    <p>Votre avis est important pour nous et pour aider les autres patients.</p>
-                    <a href="${process.env.FRONTEND_URL}/review/${data.appointmentId}" class="button">Laisser un avis</a>
+                    <p>Hello ${user.name},</p>
+                    <p>Your appointment with Dr. ${data.doctorName} went well.</p>
+                    <p>We hope you are satisfied with the consultation.</p>
+                    <p>Your review is important to us and helps other patients.</p>
+                    <a href="${process.env.FRONTEND_URL}/review/${data.appointmentId}" class="button">Leave a Review</a>
                 </div>
                 <div class="footer">
-                    <p>Cet email a été envoyé automatiquement par SmartCare.</p>
-                    <p>© ${new Date().getFullYear()} SmartCare. Tous droits réservés.</p>
+                    <p>This email was sent automatically by FasoHealth.</p>
+                    <p>&copy; ${new Date().getFullYear()} FasoHealth. All rights reserved.</p>
                 </div>
             </div>
         </body>
@@ -335,7 +335,7 @@ const generateReviewReceivedEmail = (user, data) => {
         <html>
         <head>
             <meta charset="utf-8">
-            <title>Nouvel avis reçu</title>
+            <title>New Review Received</title>
             <style>
                 body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
                 .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -349,27 +349,27 @@ const generateReviewReceivedEmail = (user, data) => {
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>🏥 SmartCare</h1>
-                    <h2>⭐ Nouvel avis reçu</h2>
+                    <h1>🏥 FasoHealth</h1>
+                    <h2>⭐ New Review Received</h2>
                 </div>
                 <div class="content">
                     <div class="review">
-                        📝 Un patient a laissé un avis sur votre consultation
+                        📝 A patient has left a review on your consultation
                     </div>
-                    <p>Bonjour Dr ${user.name},</p>
-                    <p>Vous avez reçu un nouvel avis:</p>
+                    <p>Hello Dr. ${user.name},</p>
+                    <p>You have received a new review:</p>
                     <ul>
-                        <li><strong>Note:</strong> ${'⭐'.repeat(data.rating)} (${data.rating}/5)</li>
+                        <li><strong>Rating:</strong> ${'⭐'.repeat(data.rating)} (${data.rating}/5)</li>
                         <li><strong>Patient:</strong> ${data.patientName}</li>
                         <li><strong>Date:</strong> ${data.date}</li>
-                        <li><strong>Commentaire:</strong> "${data.comment}"</li>
+                        <li><strong>Comment:</strong> "${data.comment}"</li>
                     </ul>
-                    <p>Merci pour votre excellent travail!</p>
-                    <a href="${process.env.FRONTEND_URL}/doctor/reviews" class="Button">Voir tous mes avis</a>
+                    <p>Thank you for your excellent work!</p>
+                    <a href="${process.env.FRONTEND_URL}/doctor/reviews" class="button">View All My Reviews</a>
                 </div>
                 <div class="footer">
-                    <p>Cet email a été envoyé automatiquement par SmartCare.</p>
-                    <p>© ${new Date().getFullYear()} SmartCare. Tous droits réservés.</p>
+                    <p>This email was sent automatically by FasoHealth.</p>
+                    <p>&copy; ${new Date().getFullYear()} FasoHealth. All rights reserved.</p>
                 </div>
             </div>
         </body>
@@ -383,7 +383,7 @@ const generatePasswordResetEmail = (user, data) => {
         <html>
         <head>
             <meta charset="utf-8">
-            <title>Réinitialisation de mot de passe</title>
+            <title>Password Reset</title>
             <style>
                 body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
                 .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -397,20 +397,20 @@ const generatePasswordResetEmail = (user, data) => {
             <div class="container">
                 <div class="header">
                     <h1>🏥 FasoHealth</h1>
-                    <h2>Réinitialisation de mot de passe</h2>
+                    <h2>Password Reset</h2>
                 </div>
                 <div class="content">
-                    <p>Bonjour ${user.name},</p>
-                    <p>Vous avez demandé la réinitialisation de votre mot de passe pour votre compte FasoHealth.</p>
-                    <p>Veuillez utiliser le code de vérification suivant :</p>
+                    <p>Hello ${user.name},</p>
+                    <p>You have requested a password reset for your FasoHealth account.</p>
+                    <p>Please use the following verification code:</p>
                     <div class="otp-box">
                         ${data.otp}
                     </div>
-                    <p>Ce code est valable pendant 1 heure. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email en toute sécurité.</p>
+                    <p>This code is valid for 1 hour. If you did not request this, you can safely ignore this email.</p>
                 </div>
                 <div class="footer">
-                    <p>Cet email a été envoyé automatiquement par FasoHealth.</p>
-                    <p>© ${new Date().getFullYear()} FasoHealth. Tous droits réservés.</p>
+                    <p>This email was sent automatically by FasoHealth.</p>
+                    <p>&copy; ${new Date().getFullYear()} FasoHealth. All rights reserved.</p>
                 </div>
             </div>
         </body>
@@ -425,7 +425,7 @@ const generateGenericEmail = (user, data) => {
         <html>
         <head>
             <meta charset="utf-8">
-            <title>Notification SmartCare</title>
+            <title>FasoHealth Notification</title>
             <style>
                 body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
                 .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -438,17 +438,17 @@ const generateGenericEmail = (user, data) => {
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>🏥 SmartCare</h1>
+                    <h1>🏥 FasoHealth</h1>
                     <h2>Notification</h2>
                 </div>
                 <div class="content">
-                    <p>Bonjour ${user.name},</p>
-                    <p>${data.message || 'Vous avez une nouvelle notification.'}</p>
-                    <a href="${process.env.FRONTEND_URL}/dashboard" class="button">Voir mon tableau de bord</a>
+                    <p>Hello ${user.name},</p>
+                    <p>${data.message || 'You have a new notification.'}</p>
+                    <a href="${process.env.FRONTEND_URL}/dashboard" class="button">View My Dashboard</a>
                 </div>
                 <div class="footer">
-                    <p>Cet email a été envoyé automatiquement par SmartCare.</p>
-                    <p>© ${new Date().getFullYear()} SmartCare. Tous droits réservés.</p>
+                    <p>This email was sent automatically by FasoHealth.</p>
+                    <p>&copy; ${new Date().getFullYear()} FasoHealth. All rights reserved.</p>
                 </div>
             </div>
         </body>

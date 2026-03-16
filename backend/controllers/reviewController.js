@@ -72,8 +72,8 @@ const createReview = async (req, res) => {
         await Notification.create({
             recipient: appointmentDoc.doctor._id,
             type: 'review_received',
-            title: 'Nouvel avis reçu',
-            message: `${req.user.name} a laissé un avis de ${rating}/5 étoiles`,
+            title: 'New Review Received',
+            message: `${req.user.name} left a review of ${rating}/5 stars`,
             data: {
                 appointmentId: appointment,
                 patientId: req.user._id,
@@ -369,8 +369,9 @@ const respondToReview = async (req, res) => {
         await Notification.create({
             recipient: review.patient,
             type: 'message_received',
-            title: 'Réponse à votre avis',
-            message: `Dr ${req.user.name} a répondu à votre avis`,
+            title: 'Reply to your review',
+            message: `Dr. ${req.user.name} has replied to your review`,
+
             data: {
                 reviewId: review._id,
                 doctorId: req.user._id

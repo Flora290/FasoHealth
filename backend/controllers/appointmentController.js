@@ -105,8 +105,8 @@ const createAppointment = async (req, res) => {
         await Notification.create({
             recipient: doctor,
             type: 'appointment_pending',
-            title: 'Nouveau rendez-vous',
-            message: `Vous avez une nouvelle demande de rendez-vous avec ${req.user.name}`,
+            title: 'New Appointment Request',
+            message: `You have a new appointment request from ${req.user.name}`,
             data: {
                 appointmentId: appointment._id,
                 patientId: req.user._id
@@ -121,8 +121,8 @@ const createAppointment = async (req, res) => {
         await Notification.create({
             recipient: req.user._id,
             type: 'appointment_pending',
-            title: 'Demande de rendez-vous envoyée',
-            message: `Votre demande de rendez-vous avec le Dr ${doctorUser.name} a été envoyée`,
+            title: 'Appointment Request Sent',
+            message: `Your appointment request with Dr. ${doctorUser.name} has been sent`,
             data: {
                 appointmentId: appointment._id,
                 doctorId: doctor
@@ -321,18 +321,18 @@ const updateAppointmentStatus = async (req, res) => {
             switch (status) {
                 case 'confirmed':
                     notificationType = 'appointment_confirmed';
-                    title = 'Rendez-vous confirmé';
-                    message = `Votre rendez-vous avec le Dr ${appointment.doctor.name} a été confirmé`;
+                    title = 'Appointment Confirmed';
+                    message = `Your appointment with Dr. ${appointment.doctor.name} has been confirmed`;
                     break;
                 case 'cancelled':
                     notificationType = 'appointment_cancelled';
-                    title = 'Rendez-vous annulé';
-                    message = `Le rendez-vous a été annulé: ${cancellationReason || 'Aucune raison spécifiée'}`;
+                    title = 'Appointment Cancelled';
+                    message = `The appointment has been cancelled: ${cancellationReason || 'No reason specified'}`;
                     break;
                 case 'completed':
                     notificationType = 'appointment_completed';
-                    title = 'Rendez-vous terminé';
-                    message = `Votre rendez-vous avec le Dr ${appointment.doctor.name} est terminé`;
+                    title = 'Appointment Completed';
+                    message = `Your appointment with Dr. ${appointment.doctor.name} is complete`;
                     break;
             }
 
