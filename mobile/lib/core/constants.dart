@@ -7,7 +7,7 @@ class AppConstants {
   // URL du backend FasoHealth
   // Pour les émulateurs Android, remplacez par 10.0.2.2:5000
   // Pour un vrai appareil sur le même réseau Wi-Fi, utilisez l'IP de la machine
-  static const String baseUrl = 'http://192.168.59.1:5000/api';
+  static const String baseUrl = 'https://fasohealth-backend.onrender.com/api';
 
   // Palette de couleurs enrichie (Ancienne)
   static const int tealPrimary = 0xFF0D9488;
