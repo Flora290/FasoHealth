@@ -6,6 +6,7 @@ import Layout from '../../../components/Layout';
 
 export default function ProfilePage() {
   const router = useRouter();
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -19,7 +20,7 @@ export default function ProfilePage() {
     role: ''
   });
 
-  const API_URL = typeof window !== 'undefined' ? `http://${window.location.hostname}:5000` : 'http://localhost:5000';
+  const BASE_API_URL = 'https://fasohealth-backend.onrender.com';
 
   useEffect(() => {
     fetchProfile();
@@ -30,7 +31,7 @@ export default function ProfilePage() {
       const token = localStorage.getItem('token');
       if (!token) return router.push('/login');
 
-      const res = await fetch(`${API_URL}/api/auth/profile`, {
+      const res = await fetch(`${BASE_API_URL}/api/auth/profile`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -73,7 +74,7 @@ export default function ProfilePage() {
         bodyParams.password = formData.password;
       }
 
-      const res = await fetch(`${API_URL}/api/auth/profile`, {
+      const res = await fetch(`${BASE_API_URL}/api/auth/profile`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -242,7 +243,7 @@ export default function ProfilePage() {
                              fd.append('document', file);
                              
                              try {
-                               const res = await fetch(`${API_URL}/api/users/kyc-documents`, {
+                               const res = await fetch(`${BASE_API_URL}/api/users/kyc-documents`, {
                                  method: 'POST',
                                  headers: { 'Authorization': `Bearer ${token}` },
                                  body: fd
@@ -282,7 +283,7 @@ export default function ProfilePage() {
                                 <span>📄</span>
                                 <span className="truncate max-w-[150px]">{doc.split('-').pop()}</span>
                              </div>
-                             <a href={`${API_URL}${doc}`} target="_blank" className="text-teal-600 font-bold hover:underline">View</a>
+                             <a href={`${BASE_API_URL}${doc}`} target="_blank" className="text-teal-600 font-bold hover:underline">View</a>
                           </div>
                         ))}
                       </div>
