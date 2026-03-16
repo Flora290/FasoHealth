@@ -17,7 +17,7 @@ interface FloatingPill {
 
 export default function FloatingPillsBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | null>(null);
   const pillsRef = useRef<FloatingPill[]>([]);
 
   useEffect(() => {
