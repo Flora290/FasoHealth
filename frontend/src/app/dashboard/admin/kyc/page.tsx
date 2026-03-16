@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Layout from '../../../../components/Layout';
-import { apiCall } from '../../../../utils/api';
+import { apiCall, getApiUrl } from '../../../../utils/api';
 
 export default function AdminKycPage() {
   const router = useRouter();
@@ -12,7 +12,7 @@ export default function AdminKycPage() {
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
-  const API_URL = typeof window !== 'undefined' ? `http://${window.location.hostname}:5000` : 'http://localhost:5000';
+  const API_URL = getApiUrl();
 
   useEffect(() => {
     fetchPendingDoctors();

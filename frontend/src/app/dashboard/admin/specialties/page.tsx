@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Layout from '../../../../components/Layout';
+import { getApiUrl } from '../../../../utils/api';
 
 export default function AdminSpecialtiesPage() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function AdminSpecialtiesPage() {
     typicalPriceRange: '15000 - 30000 FCFA'
   });
 
-  const API_URL = typeof window !== 'undefined' ? `http://${window.location.hostname}:5000` : 'http://localhost:5000';
+  const API_URL = getApiUrl();
 
   useEffect(() => {
     fetchSpecialties();
