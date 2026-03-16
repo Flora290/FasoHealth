@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Layout from '../../../components/Layout';
 import StatsCharts from '../../../components/StatsCharts';
-import { apiCall } from '../../../utils/api';
+import { apiCall, getApiUrl } from '../../../utils/api';
 
 interface Stats {
   totalUsers: number;
@@ -32,13 +32,12 @@ export default function AdminDashboard() {
   const fetchAdminData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const API_URL = `http://${window.location.hostname}:5000`;
       const hdr = { 'Authorization': `Bearer ${token}` };
 
       const userData = await apiCall('/api/auth/profile', { headers: { ...hdr, 'Content-Type': 'application/json' } });
       setAdminUser(userData);
 
-      const statsRes = await fetch(`${API_URL}/api/admin/dashboard?period=year`, { headers: hdr });
+      const statsRes = await fetch(`${getApiUrl()}/api/admin/dashboard?period=year`, { headers: hdr });
       if (statsRes.ok) {
         const d = await statsRes.json();
         const ov = d.overview || {};
