@@ -1,0 +1,34 @@
+# Node backend & frontend
+node_modules/
+dist/
+.env
+.DS_Store
+
+# Flutter mobile
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# Mobile builds
+*.apk
+*.aab
+*.ipa
+
+# AppData / Brain artifacts (from Gemini)
+.gemini/
+brain/
